@@ -3,7 +3,8 @@ interface ICard {
     category: string;
     title: string;
     image: string;
-    price: string
+
+    price: string | null
 }
 
 interface ICardActions {
@@ -42,6 +43,7 @@ interface ISuccess {
 interface IAppState {
     catalog: ICard[];
     basket: string[];
+    total: number;
     preview: string | null;
     order: IOrder | null;
     loading: Boolean
