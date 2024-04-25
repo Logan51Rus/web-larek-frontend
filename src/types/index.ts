@@ -1,47 +1,42 @@
-interface ICard {
+export interface IProduct {
     id: string;
-    category: string;
-    title: string;
-    image: string;
-
-    price: string | null
+	description?: string;
+	image: string;
+	title: string;
+	category: string;
+	price: number | null;
+    selected: boolean;
 }
 
-interface ICardActions {
+export interface ApiResponse {
+    items: IProduct[];
+}
+
+export interface ICardActions {
     onClick: (event: MouseEvent) => void;
 }
 
-interface IOrderForm {
-    email: string;
-    phone: string
+export interface IOrderForm {
+    address: string;
+    payment: string;
 }
 
-interface IOrder extends IOrderForm {
-    item: string[]
+export interface IOrder extends IOrderForm {
+    items: string[];
+    payment: string;
+	total: number | null;
+	address: string;
+	email: string;
+	phone: string;
 }
 
-type IBusketItem = Pick<ICard, 'id' | 'title' | 'price'> & {counter: number} 
-
-interface IBasketView {
-    items: IBusketItem[];
-    total: number;
-}
-
-interface IFormState {
+export interface IFormState {
     valid: boolean;
     errors: string[];
 }
 
-interface IModalData {
-    content: HTMLElement;
-}
-
-interface ISuccess {
-    total: number;
-}
-
-interface IAppState {
-    catalog: ICard[];
+export interface IAppState {
+    gallery: IProduct[];
     basket: string[];
     total: number;
     preview: string | null;
@@ -49,8 +44,21 @@ interface IAppState {
     loading: Boolean
 }
 
-interface IPage {
+export interface IPage {
     counter: number;
     catalog: HTMLElement[];
     locked: boolean;
 }
+
+export interface IOrderResult {
+    id: string;
+    total: number;
+}
+
+export interface IProductInBasket {
+    index: number;
+    title: string;
+    price: number;
+}
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
