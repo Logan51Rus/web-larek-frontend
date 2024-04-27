@@ -26,7 +26,6 @@ export class AppState extends Model<IAppState> {
         email: '',
         phone: ''
     };
-    loading: boolean;
     preview: string | null;
     formErrors: FormErrors = {};
 
