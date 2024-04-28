@@ -5,19 +5,9 @@ export type CatalogChangeEvent = {
     gallery: IProduct[]
 };
 
-export class Product extends Model<IProduct> {
-    id: string;
-    description: string;
-    category: string;
-    image: string;
-    title: string;
-    price: number | null;
-    selected: boolean
-}
-
 export class AppState extends Model<IAppState> {
-    basket: Product[] = [];
-    gallery: Product[];
+    basket: IProduct[] = [];
+    gallery: IProduct[];
     order: IOrder = {
         items: [],
         payment: '',
@@ -29,9 +19,8 @@ export class AppState extends Model<IAppState> {
     preview: string | null;
     formErrors: FormErrors = {};
 
-
     setGallery(items: IProduct[]) {
-        this.gallery = items.map((item) => new Product(item, this.events));
+        this.gallery = items;
         this.emitChanges('items:changed', { gallery: this.gallery });
     };
 
@@ -40,9 +29,8 @@ export class AppState extends Model<IAppState> {
         this.emitChanges('preview:changed', item)
     };
 
-    addToBasket(item: Product) {
+    addToBasket(item: IProduct) {
         this.basket.push(item);
-        this.emitChanges('basket:changed', item)
     };
 
     getTotalPrice() {
@@ -70,7 +58,7 @@ export class AppState extends Model<IAppState> {
         return this.basket.length;
     };
 
-    removeItemFromBasket(product: Product) {
+    removeItemFromBasket(product: IProduct) {
         this.basket = this.basket.filter((item) => item.id !== product.id);
     }; 
 

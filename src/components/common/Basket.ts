@@ -6,7 +6,7 @@ import { IProductInBasket } from "../../types";
 export interface IBasketView {
     items: HTMLElement[];
     total: number;
-}
+};
 
 export class Basket extends Component<IBasketView> {
     protected _list: HTMLElement;
@@ -27,7 +27,7 @@ export class Basket extends Component<IBasketView> {
         }
 
         this.items = []
-    }
+    };
 
     set items(items: HTMLElement[]) {
         if (items.length) {
@@ -39,7 +39,7 @@ export class Basket extends Component<IBasketView> {
             }))
             this.setDisabled(this._button, true)
         }
-    }
+    };
 
     set total(value: number) {
         this.setText(this._total, `${value} синапсов`)
@@ -47,7 +47,7 @@ export class Basket extends Component<IBasketView> {
 
     disableButton() {
         this._button.disabled = true
-    }
+    };
 
     updateIndices() {
 		Array.from(this._list.children).forEach((item, index) => {
@@ -55,13 +55,13 @@ export class Basket extends Component<IBasketView> {
 			if (indexInItem) {
 				indexInItem.textContent = (index + 1).toString();
 			}
-		});
-    }
+		})
+    };
 };
 
 export interface IProductInBasketAction {
     onClick: (event: MouseEvent) => void;
-}
+};
 
 export class ProductInBasket extends Component<IProductInBasket> {
     protected  _index: HTMLElement;
@@ -86,14 +86,14 @@ export class ProductInBasket extends Component<IProductInBasket> {
     };
 
     set title(value: string) {
-        this._title.textContent = value;
+        this.setText(this._title, value);
     };
 
     set price(value: number) {
-        this._price.textContent = `${value}` + ' синапсов';
+        this.setText(this._price, `${value} синапсов`);  
     };
 
-    set index(value: number) {
-        this._index.textContent = value.toString();
-    }
+    set index(value: string) {
+        this.setText(this._index,value);
+    };
 }

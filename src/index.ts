@@ -5,7 +5,7 @@ import { API_URL, CDN_URL } from './utils/constants';
 import { EventEmitter } from './components/base/events';
 import { Page } from './components/Page';
 import { cloneTemplate, ensureElement } from './utils/utils';
-import { AppState, CatalogChangeEvent, Product } from './components/AppData';
+import { AppState, CatalogChangeEvent } from './components/AppData';
 import { CatalogueItem,CatalogueItemPreview } from './components/Card';
 import { Modal } from './components/common/Modal';
 import { Basket, ProductInBasket } from './components/common/Basket';
@@ -99,15 +99,16 @@ events.on('basket:open', () => {
 });
 
 //Добавить товар в корзину
-events.on('items:add', (item: Product) => {
+events.on('items:add', (item: IProduct) => {
     appData.addToBasket(item);
+    console.log(appData.basket);
     item.selected = true;
     page.counter = appData.getProductsAmountInBasket();
     modal.close();
 });
 
 //Удалить товар из корзины
-events.on('basket:removeItem', (item: Product) => {
+events.on('basket:removeItem', (item: IProduct) => {
     appData.removeItemFromBasket(item);
     item.selected = false;
     page.counter = appData.getProductsAmountInBasket();
