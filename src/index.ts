@@ -72,8 +72,7 @@ events.on('preview:changed', (item: IProduct) => {
         } else {
             cardPreview.blockAddButton(true)
         }
-    }
-
+    };
     modal.render({content: cardPreview.render({
         id: item.id,
         image: item.image,

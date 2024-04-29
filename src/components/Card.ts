@@ -1,7 +1,7 @@
 import { Component } from "./base/Component";
 import { IProduct, ICardActions, CategoryType } from "../types";
 import { ensureElement } from "../utils/utils";
-import { categoryMapping } from "../utils/constants";
+import { productsCategories } from "../utils/constants";
 
 export class Card extends Component<IProduct> {
     protected _category: HTMLElement;
@@ -50,7 +50,7 @@ export class Card extends Component<IProduct> {
 
     set category(value: CategoryType) {
         this.setText(this._category, value);
-        this._category.classList.add(categoryMapping[value]);
+        this._category.classList.add(productsCategories[value]);
     }
 
     set button(value: string) {
