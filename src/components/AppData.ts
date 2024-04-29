@@ -41,7 +41,7 @@ export class AppState extends Model<IAppState> {
 
     clearBasket() {
 		this.basket.length = 0;
-	}
+	};
 
     resetOrder() {
         this.order = {
@@ -52,7 +52,7 @@ export class AppState extends Model<IAppState> {
             email: '',
             phone: '',
         }
-    }
+    };
 
     getProductsAmountInBasket() {
         return this.basket.length;
@@ -64,6 +64,14 @@ export class AppState extends Model<IAppState> {
 
     addProducts() {
         this.order.items = this.basket.map(item => item.id)
+    };
+
+    isProductInBasket(item: IProduct) {
+        if (this.basket.includes(item)) {
+            return true
+        }
+
+        return false
     }
     
     setOrderField(field: keyof IOrderForm, value: string) {
@@ -109,8 +117,4 @@ export class AppState extends Model<IAppState> {
         this.events.emit('contactsFormErrors:change', this.formErrors);
         return Object.keys(errors).length === 0;
     };
-
-    resetSelected() {
-        this.gallery.forEach((item => item.selected = false))
-    }
 }

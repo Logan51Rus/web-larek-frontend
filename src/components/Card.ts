@@ -1,7 +1,7 @@
 import { Component } from "./base/Component";
-import { IProduct, ICardActions } from "../types";
+import { IProduct, ICardActions, CategoryType } from "../types";
 import { ensureElement } from "../utils/utils";
-
+import { categoryMapping } from "../utils/constants";
 
 export class Card extends Component<IProduct> {
     protected _category: HTMLElement;
@@ -48,12 +48,9 @@ export class Card extends Component<IProduct> {
         this.setImage(this._image,value, this.title);
     }
 
-    set category(value: string) {
-        this.setText(this._category, value)
-    }
-
-    get category(): string {
-        return this._category.textContent || '';
+    set category(value: CategoryType) {
+        this.setText(this._category, value);
+        this._category.classList.add(categoryMapping[value]);
     }
 
     set button(value: string) {
@@ -67,7 +64,6 @@ export class Card extends Component<IProduct> {
         } else {
             this.setText(this._price,`${value} синапсов`)
         }
-        
     }
 }
 
@@ -84,6 +80,10 @@ export class CatalogueItemPreview extends Card {
         super('card', container, actions)
 
         this._description = container.querySelector(`.${this.blockName}__text`);
+    }
+
+    blockAddButton(state:boolean) {
+        this.setDisabled(this._button, state)
     }
 
     set description(value: string) {

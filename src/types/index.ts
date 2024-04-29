@@ -3,9 +3,13 @@ export interface IProduct {
 	description?: string;
 	image: string;
 	title: string;
-	category: string;
+	category: CategoryType;
 	price: number | null;
-    selected: boolean;
+}
+export type CategoryType = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
+
+export type CategoryMapping = {
+    [Key in CategoryType]: string;
 }
 
 export interface ApiResponse {

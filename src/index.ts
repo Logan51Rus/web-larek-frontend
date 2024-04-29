@@ -66,6 +66,13 @@ events.on('preview:changed', (item: IProduct) => {
     const cardPreview = new CatalogueItemPreview(cloneTemplate(cardPreviewTemplate), {
         onClick: () => events.emit('items:add', item)
     });
+    if (item) {
+        if (!appData.isProductInBasket(item)) {
+            cardPreview.blockAddButton(false)
+        } else {
+            cardPreview.blockAddButton(true)
+        }
+    }
 
     modal.render({content: cardPreview.render({
         id: item.id,
@@ -74,7 +81,6 @@ events.on('preview:changed', (item: IProduct) => {
         title: item.title,
         description: item.description,
         price: item.price,
-        selected: item.selected
         })
     })
 });
@@ -101,8 +107,6 @@ events.on('basket:open', () => {
 //Добавить товар в корзину
 events.on('items:add', (item: IProduct) => {
     appData.addToBasket(item);
-    console.log(appData.basket);
-    item.selected = true;
     page.counter = appData.getProductsAmountInBasket();
     modal.close();
 });
@@ -110,7 +114,6 @@ events.on('items:add', (item: IProduct) => {
 //Удалить товар из корзины
 events.on('basket:removeItem', (item: IProduct) => {
     appData.removeItemFromBasket(item);
-    item.selected = false;
     page.counter = appData.getProductsAmountInBasket();
     basket.total = appData.getTotalPrice()
     basket.updateIndices();
@@ -121,6 +124,7 @@ events.on('basket:removeItem', (item: IProduct) => {
 
 // Выбор способа оплаты и адреса доставки
 events.on('order:open', () => {
+    appData.addProducts();
     modal.render({
         content: orderForm.render({
         address: '',
@@ -129,6 +133,7 @@ events.on('order:open', () => {
         errors: []
         })
     })
+    appData.order.total = appData.getTotalPrice();
 });
 
 //Изменилось одно из полей
@@ -153,8 +158,6 @@ events.on('contactsFormErrors:change', (errors: Partial<IOrder>) => {
 
 //Выбираем способ оплаты и заполняем адрес доставки
 events.on('order:submit', () => {
-    appData.order.total = appData.getTotalPrice();
-    appData.addProducts();
     modal.render({
         content: contactsForm.render({
             phone: '',
@@ -172,14 +175,12 @@ events.on('contacts:submit', () => {
         events.emit('order:success', res);
         appData.clearBasket();
         appData.resetOrder();
-        appData.resetSelected();
         page.counter = 0;
         orderForm.clearOrderFields();
         contactsForm.clearContactsFields();
         
     })
-    .catch(error => console.log(error));
-    console.log(appData.basket)
+    .catch(error => console.error(error));
 });
 
 //Получаем сообщение об успешной оплате
@@ -189,7 +190,6 @@ events.on('order:success', (res: IOrderResult) => {
 			description: res.total,
 		}),
 	});
-    console.log(appData.basket)
 });
 
 //Получение данных о товарах
