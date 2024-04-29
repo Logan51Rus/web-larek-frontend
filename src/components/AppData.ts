@@ -67,13 +67,11 @@ export class AppState extends Model<IAppState> {
     };
 
     isProductInBasket(item: IProduct) {
-        if (this.basket.includes(item)) {
-            return true
-        }
+        return this.basket.some((basketItem) => {
+            return basketItem.id === item.id;
+        })
+    } 
 
-        return false
-    }
-    
     setOrderField(field: keyof IOrderForm, value: string) {
         this.order[field] = value;
 
